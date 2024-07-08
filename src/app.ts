@@ -6,7 +6,8 @@ import { Server } from "./presentacion/server";
 })();
 
 function main () {
-    Server.start();
+    // Server.start();
+console.log(process.argv);
 };
 
 
