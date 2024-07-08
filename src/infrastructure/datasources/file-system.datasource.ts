@@ -6,16 +6,18 @@ import { LogEntity, LogSeverityLevel } from "../../domain/entities/log.entity";
 export class FileSystemDatasource implements LogDatasource {
 
     // estas son argumentos 
-    private readonly logPath = 'logs/';
-    private readonly allLogPath = 'logs/logs-low.log';
-    private readonly mediumLogPath = 'logs/logs-medium.log'
-    private readonly highLogsPath = 'logs/logs-high.log'
+    private readonly logPath        = 'logs/';
+    private readonly allLogsPath    = 'logs/logs-low.log';
+    private readonly mediumLogsPath = 'logs/logs-medium.log'
+    private readonly highLogsPath   = 'logs/logs-high.log'
 
-    constructor() { }
+    constructor(
+        
+    ) { this.createLogs();}
 
 
     // function create logs
-    private createLogs = async() => {
+    private createLogs = () => {
         //that not exit path to create
         if (!fs.existsSync(this.logPath)) {
             //to create dir
@@ -24,8 +26,8 @@ export class FileSystemDatasource implements LogDatasource {
 
         // array
         [
-            this.allLogPath,
-            this.mediumLogPath,
+            this.allLogsPath,
+            this.mediumLogsPath,
             this.highLogsPath,
 
             // running to array
@@ -42,31 +44,31 @@ export class FileSystemDatasource implements LogDatasource {
     async saveLog(newLog: LogEntity): Promise<void> {
         //transform in to JSON file
         const logAsJson = `${JSON.stringify(newLog)}\n`;
-        fs.appendFileSync(this.allLogPath, logAsJson);
+        fs.appendFileSync(this.allLogsPath, logAsJson);
 
         if (newLog.level === LogSeverityLevel.low) return;
-        if (newLog.level === LogSeverityLevel.mediun) {
-            fs.appendFileSync(this.mediumLogPath, logAsJson);
+        if (newLog.level === LogSeverityLevel.medium) {
+            fs.appendFileSync(this.mediumLogsPath, logAsJson);
         } else {
             fs.appendFileSync(this.highLogsPath, logAsJson);
         }
 
     }
 
-    private getLogsFromFile(path: string): LogEntity[] {
+    private getLogsFromFile = (path: string): LogEntity[] => {
         const content = fs.readFileSync(path, 'utf-8');
         const logs = content.split('\n').map(
-            log =>LogEntity.fronJson(log)
+            log => LogEntity.fronJson(log)
         );
-        return  logs;
+        return logs;
     }
 
     async getLog(severityLevel: LogSeverityLevel): Promise<LogEntity[]> {
         switch (severityLevel) {
             case LogSeverityLevel.low:
-                return this.getLogsFromFile(this.allLogPath);
-            case LogSeverityLevel.mediun:
-                return this.getLogsFromFile(this.mediumLogPath);
+                return this.getLogsFromFile(this.allLogsPath);
+            case LogSeverityLevel.medium:
+                return this.getLogsFromFile(this.mediumLogsPath);
             case LogSeverityLevel.high:
                 return this.getLogsFromFile(this.highLogsPath);
             default:

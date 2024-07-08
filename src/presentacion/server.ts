@@ -20,7 +20,7 @@ export class Server {
         CronServices.createJob(
             '*/5 * * * * *',
             ()=>{
-               const url = 'https://google.com';
+               const url = 'https:google.com';
                 new CheckService(
                     fileSystemLogRepository,
                     ()=>console.log(`${url} is ok`),

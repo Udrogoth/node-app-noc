@@ -8,7 +8,7 @@ import { LogRepository } from "../../domain/reporitoty/log.repository";
 export class LogRepositoryImpl implements LogRepository {
 
     constructor(
-        private readonly logDatasource: LogDatasource
+        private readonly logDatasource: LogDatasource,
     ) {
 
     }
@@ -16,7 +16,7 @@ export class LogRepositoryImpl implements LogRepository {
 
 
     async saveLog(log: LogEntity): Promise<void> {
-        this.logDatasource.saveLog(log);
+        return this.logDatasource.saveLog(log);
     }
     async getLog(severityLevel: LogSeverityLevel): Promise<LogEntity[]> {
         return this.logDatasource.getLog(severityLevel);

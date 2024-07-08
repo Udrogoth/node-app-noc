@@ -1,7 +1,7 @@
 
 export enum LogSeverityLevel {
     low = 'low',
-    mediun = 'medium',
+    medium = 'medium',
     high = 'high',
 }
 
