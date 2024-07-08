@@ -1,3 +1,5 @@
+import { LogEntity, LogSeverityLevel } from "../../entities/log.entity";
+import { LogRepository } from "../../reporitoty/log.repository";
 
 interface CkeackServiceUseCase {
     execute(url: string): Promise<boolean>;
@@ -10,6 +12,7 @@ type ErrorCallback = (error: string) => void;
 export class CheckService implements CkeackServiceUseCase {
 
     constructor(
+        private readonly logRepository: LogRepository,
         private readonly successCallback: SuccessCallback,
         private readonly errorCallback: ErrorCallback,
     ) { }
@@ -21,13 +24,16 @@ export class CheckService implements CkeackServiceUseCase {
             if (!req.ok) {
                 throw new Error(`Error on ckeack service ${url}`);
             }
+            const log = new LogEntity(`service ${url} working`, LogSeverityLevel.low);
+            this.logRepository.saveLog(log)
             this.successCallback();
             return true;
         } catch (error) {
-            console.log(`${error}`);
+            const errorMessage = `${error}`;
+            const log = new LogEntity(`${errorMessage}`, LogSeverityLevel.low);
+            this.logRepository.saveLog(log);
 
-
-            this.errorCallback(`${error}`);
+            this.errorCallback(`${errorMessage}`);
             return false;
         }
 

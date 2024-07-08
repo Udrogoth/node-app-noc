@@ -1,6 +1,15 @@
 import { CronServices } from './cron/cron-service'
 import { CheckService } from '../domain/use-cases/ckecks/ckeack-service'
-import { error } from 'console';
+import { LogRepositoryImpl } from '../infrastructure/repository/log-imp.repository';
+import { FileSystemDatasource } from '../infrastructure/datasources/file-system.datasource';
+
+
+
+const fileSystemLogRepository = new LogRepositoryImpl(
+    new FileSystemDatasource()
+);
+
+
 export class Server {
 
 
@@ -13,6 +22,7 @@ export class Server {
             ()=>{
                const url = 'https://google.com';
                 new CheckService(
+                    fileSystemLogRepository,
                     ()=>console.log(`${url} is ok`),
                     (error)=>console.log(error),
                 ).execute(url)    
