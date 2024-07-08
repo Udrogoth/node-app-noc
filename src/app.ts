@@ -1,4 +1,7 @@
+
+import 'dotenv/config';
 import { Server } from "./presentacion/server";
+import { envs } from './config/plugins/envs.plugin';
 // Funion anonima autoInvocada
 
 (async () => {
@@ -7,7 +10,7 @@ import { Server } from "./presentacion/server";
 
 function main () {
     // Server.start();
-console.log(process.argv);
+    console.log(envs);
 };
 
 
