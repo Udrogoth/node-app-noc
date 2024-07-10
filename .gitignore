@@ -1,4 +1,4 @@
-
+/.env
 node_modules/
 dist/
 
@@ -7,5 +7,5 @@ dist/
 
 
 logs/
-.env
+
 mongo/
